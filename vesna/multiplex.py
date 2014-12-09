@@ -212,7 +212,7 @@ def main():
 			east_port=args.east_port, east_host=args.east_host)
 
 	def handler(signum, frame):
-		log.warning("Signal %d caught! Stopping scan..." % (signum,))
+		log.warning("Signal %d caught! Stopping..." % (signum,))
 		m.stop()
 
 	signal.signal(signal.SIGTERM, handler)
