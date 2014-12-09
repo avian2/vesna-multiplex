@@ -8,11 +8,11 @@ import threading
 log = logging.getLogger(__name__)
 
 # defaults
-EAST_PORT=2102
-EAST_HOST=""
+WEST_PORT=2102
+WEST_HOST=""
 
-WEST_PORT=2101
-WEST_HOST="localhost"
+EAST_PORT=2101
+EAST_HOST="localhost"
 
 class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 	allow_reuse_address = True
@@ -138,7 +138,7 @@ class TCPInHandler(SocketServer.BaseRequestHandler):
 
 class VESNAMultiplex(object):
 
-	def __init__(self, west_port=2102, east_port=2101, west_host='', east_host='localhost'):
+	def __init__(self, west_port=WEST_PORT, east_port=EAST_PORT, west_host=WEST_HOST, east_host=EAST_HOST):
 		self.west_port = west_port
 		self.east_port = east_port
 
@@ -194,14 +194,14 @@ class VESNAMultiplex(object):
 def main():
 	parser = argparse.ArgumentParser(description="multiplex a TCP connection to multiple clients.")
 
-	parser.add_argument('--west-port', metavar='PORT', type=int, default=EAST_PORT, dest='west_port',
+	parser.add_argument('--west-port', metavar='PORT', type=int, default=WEST_PORT, dest='west_port',
 			help="port to listen on for connection from a device")
-	parser.add_argument('--west-if', metavar='ADDR', default=EAST_HOST, dest='west_host',
+	parser.add_argument('--west-if', metavar='ADDR', default=WEST_HOST, dest='west_host',
 			help="interface to listen on for connection from a device")
 
-	parser.add_argument('--east-port', metavar='PORT', type=int, default=WEST_PORT, dest='east_port',
+	parser.add_argument('--east-port', metavar='PORT', type=int, default=EAST_PORT, dest='east_port',
 			help="port to listen on for connections from clients")
-	parser.add_argument('--east-if', metavar='ADDR', default=WEST_HOST, dest='east_host',
+	parser.add_argument('--east-if', metavar='ADDR', default=EAST_HOST, dest='east_host',
 			help="interface to listen on for connections from clients")
 
 	args = parser.parse_args()
