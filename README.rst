@@ -92,6 +92,8 @@ connections" to the multiplexer's IP and port. Set to "Always connect and
 maintain connection" and select "Raw TCP" as service type. Also, it is
 recommended to disable "Raw TCP" under "Network Services".
 
+Press ctrl-C once (or send SIGTERM) to gracefully stop the multiplexer.
+
 
 Source
 ------
