@@ -8,6 +8,39 @@ import unittest
 
 #logging.basicConfig(level=logging.DEBUG)
 
+class MockSocket():
+	def __init__(self, s):
+		self.s = s
+
+	def recv(self, n):
+		if not self.s:
+			return ""
+
+		s = self.s[0]
+		self.s = self.s[1:]
+
+		return s
+
+class TestVESNAMultiplexMisc(unittest.TestCase):
+	def test_iterlines_line(self):
+		inp = MockSocket(['help\nversion\nlist\n'])
+		out = list(vesna.multiplex.iterlines(inp))
+
+		self.assertEqual(["help\n", "version\n", "list\n"], out)
+
+	def test_iterlines_line_2(self):
+		inp = MockSocket(['help\nver', 'sion\nlist\n'])
+		out = list(vesna.multiplex.iterlines(inp))
+
+		self.assertEqual(["help\n", "version\n", "list\n"], out)
+
+	def test_iterlines_xcp(self):
+
+		inp = MockSocket(["\x02\xff\x00\x02\xff\x00"])
+		out = list(vesna.multiplex.iterlines(inp))
+
+		self.assertEqual(["\x02\xff\x00\x02\xff\x00"], out)
+
 class TestVESNAMultiplexConnection(unittest.TestCase):
 
 	def setUp(self):

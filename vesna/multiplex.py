@@ -3,6 +3,7 @@ import logging
 import signal
 import socket
 import SocketServer
+import string
 import threading
 
 log = logging.getLogger(__name__)
@@ -69,11 +70,18 @@ def iterlines(s):
 		if not resp:
 			return
 
-		lines = (rest+resp).split('\n')
-		for line in lines[:-1]:
-			yield line
+		if all(c in string.printable for c in resp):
+			# ascii command, buffer by line
+			lines = (rest+resp).split('\n')
+			for line in lines[:-1]:
+				yield line+'\n'
 
-		rest = lines[-1]
+			rest = lines[-1]
+		else:
+			# looks binary. might be XCP protocol.
+			# just send everything
+			yield rest+resp
+			rest = ''
 
 class TCPOutHandler(SocketServer.BaseRequestHandler):
 	def handle(self):
@@ -95,7 +103,7 @@ class TCPOutHandler(SocketServer.BaseRequestHandler):
 				log.debug("[east] resp=%r" % (resp,))
 				east_sockets.sendall_one(conn, resp)
 			else:
-				west_sockets.sendall(cmd+'\n')
+				west_sockets.sendall(cmd)
 
 		log.info("[east] disconnect %s:%d" % self.client_address)
 
