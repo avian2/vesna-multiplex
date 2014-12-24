@@ -51,7 +51,7 @@ class TestVESNAMultiplexConnection(unittest.TestCase):
 		self.m.is_running.acquire()
 
 	def _west_comm(self):
-		return serial.serial_for_url("socket://localhost:2102", timeout=60)
+		return serial.serial_for_url("socket://localhost:2201", timeout=60)
 
 	def _east_comm(self):
 		return serial.serial_for_url("socket://localhost:2101", timeout=60)

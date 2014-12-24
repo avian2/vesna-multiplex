@@ -83,7 +83,7 @@ After installing, run the multiplexer with the following command::
     vesna_multiplex
 
 By default, multiplexer listens for eastward connections (clients) on port
-2101 and for westward connections (node) on port 2102. Clients can connect
+2101 and for westward connections (node) on port 2201. Clients can connect
 only from localhost, while node can connect from any network interface. You
 can change these defaults with command line arguments. See --help.
 

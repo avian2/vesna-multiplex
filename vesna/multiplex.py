@@ -9,7 +9,7 @@ import threading
 log = logging.getLogger(__name__)
 
 # defaults
-WEST_PORT=2102
+WEST_PORT=2201
 WEST_HOST=""
 
 EAST_PORT=2101
